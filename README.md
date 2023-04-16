@@ -1,2 +1,2 @@
 # autoblog
-PHP+MYSQL сайт
+Сайт PHP+MYSQL
