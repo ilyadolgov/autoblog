@@ -5,50 +5,35 @@
     <script src="../scripts/script.js"></script>
 </head>
 <?php require_once '../navigation.php'; ?>
+<?php require_once '../connect.php'; ?>
 <body class="bodyautorize">
 
     <div class="centerform">
-<h1>Добро пожаловать123123!</h1>
+<h1>Добро пожаловать!</h1>
 
 <img src="../images/admin.png" class="logologin"><br>
 <button onclick="login()" class="c-button-login">Авторизация</button>
 <button onclick="registr()" class="c-button-registr">Регистрация</button>
 <div id="formaauthentication">
 <form method="post" class="forma">
-    <p><input type="text" placeholder="Имя пользователя" name="name" class="username"></p>
-    <p><input type="password" placeholder="Пароль" name="passwd" class="password"></p>
+    <p><input type="text" placeholder="Имя пользователя" name="name" class="username" required></p>
+    <p><input type="password" placeholder="Пароль" name="passwd" class="password" required></p>
     <button type="submit" name="button2" class="c-button-vhod">Войти</button>
 </form><br>
 </div>
 
 <?php
-/*ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
-
-
-
 //Авторизация пользователя
 if(isset($_POST['button2'])) {
-    session_start();
     $name=$_POST['name'];
     $passwd=$_POST['passwd'];
 
 
-    $servername = "localhost";
-    $username = "userdb";
-    $password = "Vjkjrj123451";
-    $database = "blog";
-
-    $mysqli = new mysqli($servername, $username, $password, $database);
     $query = "SELECT * FROM `users` WHERE `name`='$name'";
     $result = $mysqli->query($query);
 
     $row = mysqli_fetch_array($result);
-    //echo $row['passwd']; //Вывод пароля 
-
-    if (password_verify($passwd,$row['passwd'])) {
-        
+    if (password_verify($passwd,$row['passwd'])) {  
         $_SESSION['username'] = $name;
         header("Location: /site/index.php");
     }
@@ -60,30 +45,21 @@ if(isset($_POST['button2'])) {
 
 //Регистрация пользователя
 if(isset($_POST['button1'])) {
-    session_start();
-    $name=$_POST['name'];
+
+    $username=$_POST['name'];
     $passwd=$_POST['passwd'];
-    $servername = "localhost";
-    $username = "userdb";
-    $password = "Vjkjrj123451";
-    $database = "blog";
-
-    $mysqli = new mysqli($servername, $username, $password, $database);
-    $query = "SELECT * FROM `users` WHERE `name`='$name'";
-    $result = $mysqli->query($query);
-
-    $row = mysqli_fetch_array($result);
-    //echo $row['passwd']; //Вывод пароля 
-
-    if (password_verify($passwd,$row['passwd'])) {
-        
-        $_SESSION['username'] = $name;
+    $passwd2=$_POST['passwd2'];
+    if ($passwd==$passwd2) {
+        $passwd=password_hash($passwd,PASSWORD_DEFAULT);
+        $query = "INSERT INTO `users` (`id`, `name`, `passwd`) VALUES (NULL, '$username', '$passwd')";
+        $result = $mysqli->query($query);
+        $_SESSION['username'] = $username;
         header("Location: /site/index.php");
+
     }
     else {
-        echo "Неправильный логин или пароль!";
+        echo "Пароли не совпадают";
     }
-    
 }
 
 ?>
