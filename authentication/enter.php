@@ -8,7 +8,7 @@
 <body class="bodyautorize">
 
     <div class="centerform">
-<h1>Добро пожаловать!</h1>
+<h1>Добро пожаловать123123!</h1>
 
 <img src="../images/admin.png" class="logologin"><br>
 <button onclick="login()" class="c-button-login">Авторизация</button>
