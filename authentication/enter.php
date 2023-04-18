@@ -17,7 +17,7 @@
 <form method="post" class="forma">
     <p><input type="text" placeholder="Имя пользователя" name="name" class="username"></p>
     <p><input type="password" placeholder="Пароль" name="passwd" class="password"></p>
-    <button type="submit" name="button" class="c-button-vhod">Войти</button>
+    <button type="submit" name="button2" class="c-button-vhod">Войти</button>
 </form><br>
 </div>
 
@@ -28,13 +28,41 @@ error_reporting(E_ALL);*/
 
 
 
-
-if(isset($_POST['button'])) {
+//Авторизация пользователя
+if(isset($_POST['button2'])) {
     session_start();
     $name=$_POST['name'];
     $passwd=$_POST['passwd'];
 
 
+    $servername = "localhost";
+    $username = "userdb";
+    $password = "Vjkjrj123451";
+    $database = "blog";
+
+    $mysqli = new mysqli($servername, $username, $password, $database);
+    $query = "SELECT * FROM `users` WHERE `name`='$name'";
+    $result = $mysqli->query($query);
+
+    $row = mysqli_fetch_array($result);
+    //echo $row['passwd']; //Вывод пароля 
+
+    if (password_verify($passwd,$row['passwd'])) {
+        
+        $_SESSION['username'] = $name;
+        header("Location: /site/index.php");
+    }
+    else {
+        echo "Неправильный логин или пароль!";
+    }
+    
+}
+
+//Регистрация пользователя
+if(isset($_POST['button1'])) {
+    session_start();
+    $name=$_POST['name'];
+    $passwd=$_POST['passwd'];
     $servername = "localhost";
     $username = "userdb";
     $password = "Vjkjrj123451";
